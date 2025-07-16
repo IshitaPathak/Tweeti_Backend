@@ -7,7 +7,7 @@ import authRoutes from './routes/auth';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -56,7 +56,9 @@ app.post('/api/save-x-credentials', async (req, res) => {
   }
 });
 
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// 

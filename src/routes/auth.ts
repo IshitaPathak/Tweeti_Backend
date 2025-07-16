@@ -17,8 +17,9 @@ router.get('/github', (req, res) => {
 router.get('/github/callback', async (req, res) => {
   try {
     const { code } = req.query;
-    // Exchange code for access token
-    const response = await fetch('https://github.com/login/oauth/access_token', {
+
+    // Step 1: Exchange code for access token
+    const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,12 +32,33 @@ router.get('/github/callback', async (req, res) => {
       }),
     });
 
-    const data = await response.json();
-    res.json({ token: data.access_token });
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+
+    if (!accessToken) {
+      return res.status(400).json({ error: 'Failed to obtain access token' });
+    }
+
+    // Step 2: Use access token to get user info
+    const userResponse = await fetch('https://api.github.com/user', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: 'application/json',
+        'User-Agent': 'Node.js App',
+      },
+    });
+
+    const userData = await userResponse.json();
+    const username = userData.login;
+
+ 
+    res.redirect(`http://localhost:3002?username=${username}`);
   } catch (error) {
     console.error('GitHub auth error:', error);
-    res.status(500).json({ error: 'Authentication failed' });
+    res.redirect('http://localhost:3000?error=auth_failed');
   }
+
 });
+
 
 export default router;
