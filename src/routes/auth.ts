@@ -52,7 +52,7 @@ router.get('/github/callback', async (req, res) => {
     const username = userData.login;
 
  
-    res.redirect(`http://localhost:3002?username=${username}`);
+    res.redirect(`http://localhost:3000?username=${username}`);
   } catch (error) {
     console.error('GitHub auth error:', error);
     res.redirect('http://localhost:3000?error=auth_failed');
