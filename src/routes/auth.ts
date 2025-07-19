@@ -52,10 +52,12 @@ router.get('/github/callback', async (req, res) => {
     const username = userData.login;
 
  
-    res.redirect(`http://localhost:3000?username=${username}`);
+    const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
+    res.redirect(`${FRONTEND_URL}?username=${username}`);
   } catch (error) {
     console.error('GitHub auth error:', error);
-    res.redirect('http://localhost:3000?error=auth_failed');
+    const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
+    res.redirect(`${FRONTEND_URL}?error=auth_failed`);
   }
 
 });
