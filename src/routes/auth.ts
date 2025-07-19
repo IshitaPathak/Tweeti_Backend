@@ -50,9 +50,13 @@ router.get('/github/callback', async (req, res) => {
 
     const userData = await userResponse.json();
     const username = userData.login;
-
+    
+    console.log('GitHub user data:', userData);
+    console.log('Extracted username:', username);
+    console.log('FRONTEND_URL from env:', process.env.FRONTEND_URL);
  
     const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
+    console.log('Final redirect URL:', `${FRONTEND_URL}?username=${username}`);
     res.redirect(`${FRONTEND_URL}?username=${username}`);
   } catch (error) {
     console.error('GitHub auth error:', error);
