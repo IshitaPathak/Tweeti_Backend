@@ -21,7 +21,6 @@ yarn-error.log*
 *.sw?
 
 # Build output
-dist/
 build/
 
 # OS generated files
