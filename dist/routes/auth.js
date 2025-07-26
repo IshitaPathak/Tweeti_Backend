@@ -11,7 +11,7 @@ const router = (0, express_1.Router)();
 const sql = (0, serverless_1.neon)(process.env.DATABASE_URL);
 // GitHub OAuth endpoints
 router.get('/github', (req, res) => {
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=repo user`;
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=public_repo user`;
     res.redirect(githubAuthUrl);
 });
 router.get('/github/callback', async (req, res) => {
